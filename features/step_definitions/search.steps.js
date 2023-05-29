@@ -20,35 +20,39 @@ After(async function () {
 
 Given("user is on {string} page", async function (string) {
   return await this.page.goto(`${string}`, {
-    setTimeout: 10000,
+    setTimeout: 20000,
   });
 });
 
 When("user choose seat", async function () {
-  await clickElement (page, "body > nav > a:nth-child(6)");
-  await clickElement (page, "body > main > section > div.movie-seances__hall > ul > li > a");
-  await clickElement (page, "body > main > section > div.buying-scheme > div.buying-scheme__wrapper > div:nth-child(3) > span:nth-child(5)");
+  await clickElement (this.page, "a:nth-child(6)");
+  await clickElement (this.page, "a.movie-seances__time");
+  await clickElement (this.page, "div:nth-child(3) > span:nth-child(5)");
+  await clickElement (this.page, "button");
 });
 When("user choose two seats", async function () {
-  await clickElement (page, "body > nav > a:nth-child(6)");
-  await clickElement (page, "body > main > section > div.movie-seances__hall > ul > li > a");
-  await clickElement (page, "body > main > section > div.buying-scheme > div.buying-scheme__wrapper > div:nth-child(3) > span:nth-child(5)");
-  await clickElement (page, "body > main > section > div.buying-scheme > div.buying-scheme__wrapper > div:nth-child(3) > span:nth-child(6)");
+  await clickElement (this.page, "a:nth-child(6)");
+  await clickElement (this.page, "a.movie-seances__time");
+  await clickElement (this.page, "div:nth-child(3) > span:nth-child(5)");
+  await clickElement (this.page, "div:nth-child(3) > span:nth-child(6)");
+  await clickElement (this.page, "button");
 });
 When("user not choose seat", async function () {
-  await clickElement (page, "body > nav > a:nth-child(6)");
-  await clickElement (page, "body > main > section > div.movie-seances__hall > ul > li > a");
-  await clickElement (page, "body > main > section > div.buying-scheme > div.buying-scheme__wrapper > div:nth-child(3) > span:nth-child(5)");
-  await clickElement (page, "body > main > section > div.buying-scheme > div.buying-scheme__wrapper > div:nth-child(3) > span:nth-child(5)");
+  await clickElement (this.page, "a:nth-child(6)");
+  await clickElement (this.page, "a.movie-seances__time");
+  await clickElement (this.page, "div:nth-child(3) > span:nth-child(5)");
+  await clickElement (this.page, "div:nth-child(3) > span:nth-child(5)");
+  await clickElement (this.page, "button");
 });
 
-Then("user sees button become enable", async function () {
-  const actual = await page.$eval("body > main > section > button", (link) => link.getAttribute("disabled"));
-  const expected = null;
-  expect(actual).equal(expected);
+Then("user sees message", async function () {
+    await this.page.waitForSelector("h2");
+    const actual = await this.page.$eval("h2", (link) => link.textContent);
+    const expected = "Вы выбрали билеты:";
+    expect(actual).contain(expected);
 });
 Then("user sees button become disable", async function () {
-  const actual = await page.$eval("body > main > section > button", (link) => link.getAttribute("disabled"));
+  const actual = await this.page.$eval("button", (link) => link.getAttribute("disabled"));
   const expected = "true";
   expect(actual).equal(expected);
 });
